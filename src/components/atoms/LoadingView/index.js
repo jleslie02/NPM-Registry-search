@@ -35,7 +35,7 @@ export const StatelessLoadingView = props => {
         height: '100%',
         left: '50%',
         textAlign: 'center',
-        ':nth-child(1)': {
+        ':nth-of-type(1)': {
           backgroundImage: `linear-gradient(to right ,rgba(115, 109, 109, 0.87),rgba(255, 134, 10, 0.97))`,
           animation: `${
             props.loading
@@ -43,7 +43,7 @@ export const StatelessLoadingView = props => {
               : 'none'
           }`
         },
-        ':nth-child(2)': {
+        ':nth-of-type(2)': {
           backgroundImage: `linear-gradient(to right ,rgba(107, 97, 97, 0.87),rgba(255, 226, 21, 0.97))`,
           animation: `${
             props.loading

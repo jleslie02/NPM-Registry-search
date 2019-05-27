@@ -14,8 +14,12 @@ export const useDataApi = (
   initialData,
   initialHistory
 ) => {
-  // Set search query, error and chaos mode state
+  // Set search query, error and chaos mode state < from user input
   const [search, setSearch] = useState(initialSearch);
+  // Search query for the current page
+  const [actualSearch, setActualSearch] = useState(
+    initialSearch
+  );
   const [{ isError, message }, setError] = useState({
     isError: false,
     message: null
@@ -49,6 +53,8 @@ export const useDataApi = (
             history.push(
               `/search?${queryString.stringify(search)}`
             );
+            // set the actual search to the current user search only if the call is successfull
+            setActualSearch(search);
             dispatch({
               type: 'FETCH_SUCCESS',
               payload: result.data
@@ -79,6 +85,7 @@ export const useDataApi = (
   return [
     { ...state, isError, message, chaosMode, search },
     setSearch,
+    setActualSearch,
     setChaos,
     setError
   ];

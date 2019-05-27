@@ -1,11 +1,8 @@
 /* eslint-disable no-unused-vars */
 /* @jsx jsx */
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { jsx, css } from '@emotion/core';
-import { ThemeProvider } from 'emotion-theming';
-import Loadable from 'react-loadable';
 import { withRouter } from 'react-router';
-import { useSelector } from 'react-redux';
 
 const Search = props => {
   const { search, onSearch, isLoading, theme } = props;
@@ -13,7 +10,8 @@ const Search = props => {
   // Define styles
   const classes = {
     search: css({
-      position: 'relative'
+      position: 'relative',
+      ...theme.mixins.flexDisplay()
     }),
     wrapper: css(
       (() => ({
@@ -28,7 +26,8 @@ const Search = props => {
         ...theme.mixins.placeholder('#979797', '18px'),
         margin: '0px',
         width: '100%',
-        padding: '10px 30px'
+        padding: '10px 30px',
+        paddingRight: '90px'
       }))()
     ),
 
@@ -70,7 +69,7 @@ const Search = props => {
       return query !== '' && query !== search.q;
     };
     if (canSearch() && !isLoading) {
-      const newSearch = { ...search, q: query };
+      const newSearch = { q: query };
       onSearch(newSearch);
     }
   };

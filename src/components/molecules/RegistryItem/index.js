@@ -5,18 +5,22 @@ import { jsx, css } from '@emotion/core';
 import Tag from '../../atoms/Tag';
 
 const Registry = props => {
-  const { score, data, description, theme } = props;
+  const { score, data, flags, theme } = props;
 
   // Define styles
   const classes = {
     registryItem: css({
       ...theme.mixins.flexDisplay(),
       ...theme.mixins.justifyContent('space-between'),
+      overflow: 'hidden',
       position: 'relative',
       width: '100%',
       margin: '25px 0 0 0',
       paddingBottom: '25px',
-      borderBottom: '1px solid #bdbdbd'
+      borderBottom: '1px solid #bdbdbd',
+      '@media (max-width: 650px)': {
+        display: 'inline-block'
+      }
     }),
     nameImage: css(
       (() => ({
@@ -37,7 +41,12 @@ const Registry = props => {
       (() => ({
         flex: '1',
         width: '100%',
-        overflow: 'hidden'
+        overflow: 'hidden',
+        paddingLeft: '30px',
+        color: '#617083',
+        '@media (max-width: 650px)': {
+          paddingLeft: '10px'
+        }
       }))()
     ),
     stableTag: css((() => ({}))()),
@@ -53,18 +62,20 @@ const Registry = props => {
         color: 'white',
         ...theme.mixins.boxShadow(
           'inset -1px 0px 8px 0px #e84848'
-        )
+        ),
+        '@media (max-width: 650px)': {
+          marginLeft: '6px',
+          marginTop: '10px'
+        }
       }))()
     ),
     keywords: css(
       (() => ({
         ...theme.mixins.flexDisplay(),
         ...theme.mixins.flexWrap('wrap'),
+        marginLeft: '-10px',
         '> div': {
-          margin: '5px',
-          ':first-child': {
-            marginLeft: '0'
-          }
+          margin: '5px'
         }
       }))()
     ),
@@ -72,9 +83,101 @@ const Registry = props => {
       (() => ({
         position: 'absolute'
       }))()
+    ),
+    mainName: css(
+      (() => ({
+        ...theme.mixins.flexDisplay(),
+        ...theme.mixins.alignItems('baseline'),
+        '> span': {
+          ...theme.mixins.ellipsify(),
+          maxWidth: '400px',
+          color: '#3c495a',
+          fontSize: '22px',
+          fontWeight: 'bold'
+        },
+        '> div': {
+          color: '#a7adb5',
+          fontSize: '16px',
+          marginLeft: '10px',
+          letterSpacing: '1px'
+        }
+      }))()
+    ),
+    contact: css(
+      (() => ({
+        ...theme.mixins.flexDisplay(),
+        margin: '6px 0',
+        fontSize: '15px',
+        '.email': {
+          marginLeft: '15px',
+          color: '#55a8fd'
+        },
+        '.user': {
+          color: '#7f92a9'
+        },
+        ' .fa': {
+          ...theme.layout.iconFont,
+          WebkitTextStrokeColor: '#828282',
+          fontSize: '15px',
+          marginRight: '5px',
+          '&.fa-envelope': {
+            WebkitTextStrokeColor: '#55a8fd'
+          }
+        }
+      }))()
+    ),
+    stats: css(
+      (() => ({
+        ...theme.mixins.flexDisplay(),
+        ...theme.mixins.flexWrap('wrap'),
+        fontSize: '12px',
+        margin: '8px 0',
+
+        '.statWrapper': {
+          ...theme.mixins.flexDisplay(),
+          ...theme.mixins.alignItems('center'),
+          '@media (max-width: 650px)': {
+            display: 'inline-grid',
+            marginRight: '10px'
+          }
+        },
+        '.statName': {
+          textTransform: 'capitalize',
+          '&.quality': {
+            color: '#8956FF'
+          },
+          '&.maintenance': {
+            color: '#cb3837'
+          },
+          '&.popularity': {
+            color: '#29ABE2'
+          }
+        },
+        '.statNumber': {
+          fontWeight: 'bold',
+          marginLeft: '4px'
+        }
+      }))()
+    ),
+    separate: css(
+      (() => ({
+        width: '3px',
+        height: '3px',
+        border: '1px solid #e2e2e2',
+        borderRadius: '3px',
+        background: '#e2e2e2',
+        margin: '0 20px',
+        '@media (max-width: 650px)': {
+          display: 'none'
+        }
+      }))()
+    ),
+    summary: css(
+      (() => ({
+        margin: '20px 0'
+      }))()
     )
   };
-
   return (
     <div
       data-gm="registry-item"
@@ -87,19 +190,17 @@ const Registry = props => {
           {/* PACKAGE NAME */}
           <div css={classes.mainName}>
             <span>{data.name}</span>
-            <div css={classes.version}>{data.version}</div>
+            <div>{data.version}</div>
           </div>
           {/* AUTHOR DESC */}
           <div css={classes.contact}>
-            {data.author && data.author.name && (
-              <div>
-                <span className="fa fa-unknown" />
-                {data.name}
-              </div>
-            )}
+            <div className="user">
+              <span className="fa fa-user" />
+              {(data.author || {}).name || 'unknown'}
+            </div>
             {data.author && data.author.email && (
-              <div>
-                <span className="fa fa-email" />
+              <div className="email">
+                <span className="fa fa-envelope" />
                 {data.author.email}
               </div>
             )}
@@ -109,14 +210,20 @@ const Registry = props => {
             {Object.keys((score || {}).detail || {}).map(
               (stat, idx) => {
                 return (
-                  <div key={`${stat}-${data.name}`}>
-                    <span css={classes.statName}>
+                  <div
+                    key={`${stat}-${data.name}`}
+                    className="statWrapper"
+                  >
+                    <span className={`${stat} statName`}>
                       {stat}
                     </span>
-                    <span css={classes.statName}>
+                    <span className="statNumber">
                       {Math.round(score.detail[stat] * 100)}
+                      %
                     </span>
-                    <div css={classes.separate} />
+                    {idx < 2 && (
+                      <div css={classes.separate} />
+                    )}
                   </div>
                 );
               }
@@ -124,18 +231,19 @@ const Registry = props => {
           </div>
           {/* PACKAGE DESCRIPTION */}
           {data.description && (
-            <div css={classes.stats}>
+            <div css={classes.summary}>
               {data.description}
             </div>
           )}
-          {/* PACKAGE DESCRIPTION */}
+          {/* PACKAGE KEYWORDS */}
           {data.keywords && data.keywords.length > 0 && (
             <div css={classes.keywords}>
-              {data.keywords.map(word => {
+              {data.keywords.map((word, idx) => {
                 return (
                   <Tag
                     theme={theme}
-                    key={`${data.name}-key-${word}`}
+                    // eslint-disable-next-line react/no-array-index-key
+                    key={`${data.name}-key-${word}-${idx}`}
                     label={word}
                   />
                 );
@@ -145,7 +253,16 @@ const Registry = props => {
         </div>
       </div>
       <div css={classes.stableTag}>
-        <div css={classes.stable}>unstable</div>
+        {Object.keys(flags || {}).map(flag => {
+          return (
+            <span
+              key={`${data.name}-key-${flag}`}
+              css={classes.stable}
+            >
+              {flag}
+            </span>
+          );
+        })}
       </div>
       <div css={classes.date} />
     </div>

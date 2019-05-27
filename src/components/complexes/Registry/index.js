@@ -34,8 +34,8 @@ const Registry = props => {
       <CSSTransitionGroup
         component="div"
         transitionName="registry"
-        transitionEnterTimeout={700}
-        transitionLeaveTimeout={700}
+        transitionEnterTimeout={300}
+        transitionLeaveTimeout={200}
       >
         {data.map(item => {
           return (
@@ -43,6 +43,7 @@ const Registry = props => {
               key={item.package.name}
               score={item.score}
               data={item.package}
+              flags={item.flags}
               theme={theme}
               css={classes.item}
             />

@@ -32,12 +32,13 @@ const App = props => {
       message,
       isLoading,
       chaosMode,
-      search
+      actualSearch
     },
     fetchData,
+    setActualSearch,
     setChaosMode,
     setError
-  ] = useDataApi(null, [], history);
+  ] = useDataApi(null, null, history);
 
   // Choose how you want your api to fail
   const [showFilters, setShowFilters] = useState(false);
@@ -130,7 +131,8 @@ const App = props => {
         />
         <Home
           onSearch={fetchData}
-          search={search || {}}
+          search={actualSearch}
+          setActualSearch={setActualSearch}
           data={data}
           isLoading={isLoading}
           theme={theme}
