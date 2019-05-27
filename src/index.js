@@ -1,19 +1,26 @@
-/* @jsx jsx */
-import { jsx } from '@emotion/core'
-import React from 'react'
-import ReactDOM from 'react-dom'
+import React from 'react';
+import { render } from 'react-dom';
+import { BrowserRouter } from 'react-router-dom';
+import App from './App';
 
-import './styles.css'
+require('./stylesheets/index.css');
+require('./stylesheets/lato.css');
+require('./stylesheets/font-awesome.css');
 
-export default class App extends React.Component {
-  render() {
-    return (
-      <div className="App" css={{ color: 'darkgray' }}>
-        <input type="text" placeholder="Search NPM" />
-      </div>
-    )
-  }
-}
+const renderApp = () => (
+  <BrowserRouter>
+    <App />
+  </BrowserRouter>
+);
 
-const rootElement = document.getElementById('root')
-ReactDOM.render(<App />, rootElement)
+// Hot Module Replacement API
+// if (module.hot) {
+//   module.hot.accept('./App.js', () => {
+//     ReactDOM.render(
+//       renderApp(),
+//       document.getElementById('root')
+//     );
+//   });
+// }
+
+render(renderApp(), document.getElementById('root'));

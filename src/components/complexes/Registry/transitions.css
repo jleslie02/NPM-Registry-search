@@ -1,0 +1,19 @@
+.registry-enter {
+  opacity: 0.01;
+  width: 0px;
+}
+
+.registry-enter.registry-enter-active {
+  opacity: 1;
+  transition: 700ms;
+}
+
+.registry-leave {
+  opacity: 1;
+}
+
+.registry-leave.registry-leave-active {
+  opacity: 0.01;
+  width: 0px;
+  transition: 700ms;
+}
