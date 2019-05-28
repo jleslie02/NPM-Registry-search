@@ -54,51 +54,59 @@ const ChaosToggle = props => {
     icons: css(
       (() => ({
         ...theme.mixins.flexDisplay(),
-        ...theme.mixins.alignItems('center'),
+        ...theme.mixins.flexDirection('column'),
         position: 'absolute',
         top: '54px',
         height: '0',
         overflow: 'hidden',
         padding: '0',
         border: '0 solid rgba(0, 0, 0, 0.39)',
-        left: '-35%',
+        left: '9px',
         ...theme.mixins.transition('all 0.4s ease-in-out'),
         zIndex: '2',
         background: '#ffffff',
+        width: '110px',
         '&.open': {
-          height: '33px',
+          height: '150px',
           border: '1px solid rgba(0, 0, 0, 0.39)',
-          padding: '7px 15px',
+          padding: '7px 10px',
           borderRadius: '15px',
           ...theme.mixins.transition('all 0.4s ease-in-out')
         },
-        '> .fa': {
-          width: '33px',
-          fontSize: '31px',
-          color: '#d83c3c',
-          marginRight: '10px',
-          cursor: 'pointer'
-        },
         '> div': {
           cursor: 'pointer',
-          height: '33px',
-          width: '33px',
-          ':not(:last-child)': {
+          ...theme.mixins.flexDisplay(),
+          ...theme.mixins.alignItems('center'),
+          backgroundSize: 'contain',
+          color: '#505050',
+          ':not(:nth-of-type(1))': {
+            marginTop: '8px'
+          },
+          '> .fa': {
+            fontSize: '18px',
             marginRight: '10px'
           },
-          backgroundSize: 'contain'
-        },
-        '> .internet': {
-          backgroundImage: `url(${internet})`
-        },
-        '> .clock': {
-          backgroundImage: `url(${clock})`
-        },
-        '> .json': {
-          backgroundImage: `url(${jsonFormat})`
+          '&.internet .fa': {
+            color: '#0061b9'
+          },
+          '&.clock .fa': {
+            color: '#ff6e00'
+          },
+          '&.reset .fa': {
+            color: '#d83c3c'
+          },
+          '&.json .fa': {
+            color: '#008000'
+          }
         }
       }))()
-    )
+    ),
+    title: css({
+      color: '#767676',
+      borderBottom: '1px solid #e5e5e5',
+      padding: '5px 0',
+      fontSize: '12px'
+    })
   };
 
   // utilities function
@@ -108,9 +116,10 @@ const ChaosToggle = props => {
   };
 
   const images = [
-    { name: 'internet', link: internet },
-    { name: 'clock', link: clock },
-    { name: 'json', link: jsonFormat }
+    { name: null, icon: 'fa fa-ban' },
+    { name: 'internet', icon: 'fa fa-globe' },
+    { name: 'clock', icon: 'fa fa-clock-o' },
+    { name: 'json', icon: 'fa fa-file' }
   ];
 
   return (
@@ -131,18 +140,18 @@ const ChaosToggle = props => {
         css={classes.icons}
         className={`${open ? 'open' : ''}`}
       >
-        <i
-          className="fa fa-ban"
-          onClick={() => onChange(null)}
-        />
+        <div css={classes.title}>Chaos</div>
         {images.map(image => {
           return (
             <div
-              key={`${image.name}-chaos`}
+              key={`${image.name || 'reset'}-chaos`}
               css={classes.image}
-              className={image.name}
+              className={image.name || 'reset'}
               onClick={() => onChange(image.name)}
-            />
+            >
+              <span className={image.icon} />
+              {image.name || 'Stop'}
+            </div>
           );
         })}
       </div>

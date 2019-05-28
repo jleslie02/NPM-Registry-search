@@ -140,6 +140,7 @@ export const styles = theme => {
           border: '1px solid #ccc',
           fontSize: '11px',
           borderRadius: '8px',
+          color: '#505050',
           '&.selected': {
             background: 'rgba(97, 152, 23, 0.67)',
             color: 'white',

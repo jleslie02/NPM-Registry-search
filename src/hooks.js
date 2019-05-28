@@ -1,3 +1,4 @@
+/* eslint-disable prefer-promise-reject-errors */
 /* eslint-disable no-unused-vars */
 /* eslint-disable import/prefer-default-export */
 import React, {
@@ -8,6 +9,18 @@ import React, {
 import axios from 'axios';
 import queryString from 'query-string';
 import { dataFetchReducer } from './reducers';
+
+// A promise that throttle the api request for 8 seconds
+const timeoutPromise = () =>
+  new Promise((resolve, reject) => {
+    const id = setTimeout(() => {
+      clearTimeout(id);
+      reject({
+        error:
+          'It is taking too long to fetch the data. Please try again later.'
+      });
+    }, 8000);
+  });
 
 export const useDataApi = (
   initialSearch,
@@ -50,18 +63,27 @@ export const useDataApi = (
             'There is no internet connection. Please reconnect then reload the app.'
         });
         // eslint-disable-next-line no-else-return
-      } else if (
-        chaosMode === null ||
-        chaosMode === 'json'
-      ) {
+      } else if (chaosMode !== 'internet') {
         dispatch({ type: 'FETCH_INIT' });
-
         try {
-          const result = await axios(
-            `https://api.npms.io/v2/search/suggestions?${queryString.stringify(
-              search
-            )}`
-          );
+          let result = null;
+
+          if (chaosMode === 'clock') {
+            result = await Promise.all([
+              timeoutPromise(),
+              axios(
+                `https://api.npms.io/v2/search/suggestions?${queryString.stringify(
+                  search
+                )}`
+              )
+            ]);
+          } else {
+            result = await axios(
+              `https://api.npms.io/v2/search/suggestions?${queryString.stringify(
+                search
+              )}`
+            );
+          }
 
           if (!didCancel) {
             history.push(
@@ -93,7 +115,8 @@ export const useDataApi = (
             dispatch({ type: 'FETCH_FAILURE' });
             setError({
               isError: true,
-              message: 'We are unable to fetch data'
+              message:
+                error.error || 'We are unable to fetch data'
             });
             // here push the history
           }
