@@ -1,8 +1,10 @@
 /* eslint-disable no-unused-vars */
 /* @jsx jsx */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { jsx, css } from '@emotion/core';
 import { ThemeProvider } from 'emotion-theming';
+import queryString from 'query-string';
+import includes from 'ramda/src/includes';
 import { withRouter } from 'react-router';
 import Header from './components/complexes/Header';
 import Alerts from './components/molecules/Alerts';
@@ -42,7 +44,6 @@ const App = props => {
 
   // Choose how you want your api to fail
   const [showFilters, setShowFilters] = useState(false);
-
   // End App States
 
   // React hooks
@@ -75,8 +76,7 @@ const App = props => {
     };
   }, []);
 
-  // instantiate a window listener on resize
-  // to update the overall height and width of the app
+  // set the overall theme
   useEffect(() => {
     setTheme(makeAtomicTheme(mode));
   }, [mode]);
@@ -91,6 +91,46 @@ const App = props => {
   const toggleShowFilters = () =>
     setShowFilters(!showFilters);
 
+  const filteredData = useMemo(() => {
+    if (!data || data.length === 0) return data;
+
+    const filters = actualSearch || {};
+    let newData = data;
+    // Filter by rank if available
+    if ((filters.ranking || '').length > 0) {
+      newData.sort((itemA, itemB) => {
+        return (
+          itemB.score.detail[filters.ranking] -
+          itemA.score.detail[filters.ranking]
+        );
+      });
+    }
+    // filter by stable only if on
+    if (filters.stableonly) {
+      newData = newData.filter(item => {
+        return !item.flags || !item.flags.unstable;
+      });
+    }
+
+    // filter by keywords if available
+    if (filters.keywords) {
+      newData = newData.filter(item => {
+        return includes(
+          filters.keywords,
+          item.package.keywords || []
+        );
+      });
+    }
+
+    if (filters.q) {
+      newData.sort(itemA => {
+        return itemA.package.name === filters.q;
+      });
+    }
+
+    return newData;
+  }, [data, actualSearch]);
+
   // End Utilities functions
 
   // Styles
@@ -98,7 +138,8 @@ const App = props => {
     (() => ({
       ...theme.mixins.flexDisplay(),
       ...theme.mixins.flexDirection('column'),
-      ...theme.mixins.justifyContent('space-between')
+      ...theme.mixins.justifyContent('space-between'),
+      backgroundColor: theme.palette.app.background
     }))()
   );
 
@@ -126,6 +167,7 @@ const App = props => {
           removeError={() =>
             setError({ isError: null, message: null })
           }
+          theme={theme}
           isError={isError}
           message={message}
         />
@@ -133,9 +175,10 @@ const App = props => {
           onSearch={fetchData}
           search={actualSearch}
           setActualSearch={setActualSearch}
-          data={data}
+          data={filteredData}
           isLoading={isLoading}
           theme={theme}
+          showFilters={showFilters}
         />
         {/*
         <Footer /> */}

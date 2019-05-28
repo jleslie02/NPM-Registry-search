@@ -13,14 +13,4 @@ const renderApp = () => (
   </BrowserRouter>
 );
 
-// Hot Module Replacement API
-// if (module.hot) {
-//   module.hot.accept('./App.js', () => {
-//     ReactDOM.render(
-//       renderApp(),
-//       document.getElementById('root')
-//     );
-//   });
-// }
-
 render(renderApp(), document.getElementById('root'));

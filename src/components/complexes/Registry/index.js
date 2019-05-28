@@ -2,10 +2,21 @@
 /* @jsx jsx */
 import React from 'react';
 import { jsx, css } from '@emotion/core';
+import PropTypes from 'prop-types';
 import CSSTransitionGroup from 'react-addons-css-transition-group';
 import RegistryItem from '../../molecules/RegistryItem';
 
 import './transitions.css';
+
+const propTypes = {
+  data: PropTypes.instanceOf(Array),
+  theme: PropTypes.instanceOf(Object)
+};
+
+const defaultProps = {
+  data: null,
+  theme: { mixins: {}, layout: {}, colors: {} }
+};
 
 const Registry = props => {
   const { data, theme } = props;
@@ -14,10 +25,15 @@ const Registry = props => {
   const classes = {
     registry: css({
       ...theme.mixins.flexDisplay(),
+      background: theme.palette.registry.background,
       height: '100%',
+      marginTop: '15px',
+      borderTop: `1px solid ${
+        theme.palette.registry.borderTopColor
+      }`,
       '> div': {
         width: '100%',
-        height: 'calc(100% - 95px)',
+        height: 'calc(100% - 150px)',
         overflow: 'scroll',
         padding: '0 20px'
       }
@@ -53,5 +69,8 @@ const Registry = props => {
     </div>
   );
 };
+
+Registry.propTypes = propTypes;
+Registry.defaultProps = defaultProps;
 
 export default Registry;

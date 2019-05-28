@@ -2,7 +2,22 @@
 /* @jsx jsx */
 import React, { useState } from 'react';
 import { jsx, css } from '@emotion/core';
+import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
+
+const propTypes = {
+  onSearch: PropTypes.func,
+  theme: PropTypes.instanceOf(Object),
+  search: PropTypes.instanceOf(Object),
+  isLoading: PropTypes.bool
+};
+
+const defaultProps = {
+  theme: { mixins: {}, layout: {}, colors: {} },
+  onSearch: () => {},
+  search: {},
+  isLoading: false
+};
 
 const Search = props => {
   const { search, onSearch, isLoading, theme } = props;
@@ -16,12 +31,12 @@ const Search = props => {
     wrapper: css(
       (() => ({
         border: '0',
-        borderBottom: '2px solid #e5e5e5',
+        borderBottom: '1.5px solid #e5e5e5',
         fontSize: '18px',
         lineHeight: '30px',
         minHeight: '50px',
-        background: 'transparent',
-        color: '#505050', // '#fbfbfb',
+        color: theme.palette.search.color,
+        background: theme.palette.search.background,
         outline: 'none',
         ...theme.mixins.placeholder('#979797', '18px'),
         margin: '0px',
@@ -66,7 +81,7 @@ const Search = props => {
   // Utilities functions
   const setSearch = () => {
     const canSearch = () => {
-      return query !== '' && query !== search.q;
+      return query !== '' && query !== (search || {}).q;
     };
     if (canSearch() && !isLoading) {
       const newSearch = { q: query };
@@ -96,5 +111,8 @@ const Search = props => {
     </div>
   );
 };
+
+Search.propTypes = propTypes;
+Search.defaultProps = defaultProps;
 
 export default withRouter(Search);

@@ -1,22 +1,43 @@
+/* @jsx jsx */
 import React from 'react';
+import { jsx, css } from '@emotion/core';
 import PropTypes from 'prop-types';
 
 const propTypes = {
-  alert: PropTypes.instanceOf(Object)
+  message: PropTypes.string,
+  isError: PropTypes.bool
 };
 
 const defaultProps = {
-  alert: {
-    message: ''
-  }
+  message: '',
+  isError: false
 };
 
 const StatefulAlerts = props => {
-  const { alert } = props;
+  const { isError, message, theme } = props;
+  const classes = {
+    alert: css(
+      (() => ({
+        height: '70px',
+        padding: '0 20px',
+        background:
+          'rgba(253, 116, 116, 0.5686274509803921)',
+        color: theme.palette.alert.color,
+        ...theme.mixins.flexDisplay(),
+        ...theme.mixins.alignItems('center')
+      }))()
+    )
+  };
+  if (!isError) return null;
 
-  return <div data-sn="alerts">{alert.message}</div>;
+  return (
+    <div data-gm="alerts" css={classes.alert}>
+      {message}
+    </div>
+  );
 };
 
 StatefulAlerts.propTypes = propTypes;
 StatefulAlerts.defaultProps = defaultProps;
+
 export default StatefulAlerts;

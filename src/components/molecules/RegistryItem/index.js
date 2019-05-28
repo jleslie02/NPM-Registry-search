@@ -2,7 +2,22 @@
 /* @jsx jsx */
 import React from 'react';
 import { jsx, css } from '@emotion/core';
+import PropTypes from 'prop-types';
 import Tag from '../../atoms/Tag';
+
+const propTypes = {
+  theme: PropTypes.instanceOf(Object),
+  score: PropTypes.instanceOf(Object),
+  flags: PropTypes.instanceOf(Object),
+  data: PropTypes.instanceOf(Object)
+};
+
+const defaultProps = {
+  theme: { mixins: {}, layout: {}, colors: {} },
+  score: {},
+  flags: null,
+  data: {}
+};
 
 const Registry = props => {
   const { score, data, flags, theme } = props;
@@ -43,7 +58,7 @@ const Registry = props => {
         width: '100%',
         overflow: 'hidden',
         paddingLeft: '30px',
-        color: '#617083',
+        color: theme.palette.registry.item.color,
         '@media (max-width: 650px)': {
           paddingLeft: '10px'
         }
@@ -86,12 +101,13 @@ const Registry = props => {
     ),
     mainName: css(
       (() => ({
+        cursor: 'pointer',
         ...theme.mixins.flexDisplay(),
         ...theme.mixins.alignItems('baseline'),
         '> span': {
           ...theme.mixins.ellipsify(),
           maxWidth: '400px',
-          color: '#3c495a',
+          color: theme.palette.registry.item.name,
           fontSize: '22px',
           fontWeight: 'bold'
         },
@@ -184,11 +200,21 @@ const Registry = props => {
       className="registryItem"
       css={classes.registryItem}
     >
-      <div css={classes.nameImage}>{data.name[0]}</div>
+      <div css={classes.nameImage}>
+        {((data.author || {}).name || 'unknown')[0]}
+      </div>
       <div css={classes.description}>
         <div css={classes.header}>
           {/* PACKAGE NAME */}
-          <div css={classes.mainName}>
+          <div
+            css={classes.mainName}
+            onClick={() => {
+              if (data.links.npm) {
+                window.open(data.links.npm, '_blank');
+              }
+              return null;
+            }}
+          >
             <span>{data.name}</span>
             <div>{data.version}</div>
           </div>
@@ -268,5 +294,8 @@ const Registry = props => {
     </div>
   );
 };
+
+Registry.propTypes = propTypes;
+Registry.defaultProps = defaultProps;
 
 export default Registry;

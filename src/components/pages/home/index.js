@@ -17,14 +17,16 @@ const propTypes = {
   onSearch: PropTypes.func,
   search: PropTypes.instanceOf(Object),
   data: PropTypes.instanceOf(Object),
-  isLoading: PropTypes.bool
+  isLoading: PropTypes.bool,
+  showFilters: PropTypes.bool
 };
 
 const defaultProps = {
   onSearch: () => {},
   search: {},
   data: null,
-  isLoading: false
+  isLoading: false,
+  showFilters: false
 };
 
 const Home = props => {
@@ -34,6 +36,7 @@ const Home = props => {
     setActualSearch,
     data,
     theme,
+    showFilters,
     isLoading
   } = props;
 
@@ -47,8 +50,9 @@ const Home = props => {
       (() => ({
         height: '80%',
         ...theme.mixins.flexCenter(),
-        color: '#afafaf',
-        fontSize: '25px'
+        color: theme.palette.registry.color,
+        fontSize: '25px',
+        background: theme.palette.registry.background
       }))()
     )
   };
@@ -70,7 +74,9 @@ const Home = props => {
    */
   const getRegistry = () => {
     if (!data) {
-      return <div css={classes.type}>Type in a package</div>;
+      return (
+        <div css={classes.type}>Type in a package...</div>
+      );
     }
     if (data.length === 0) {
       return <div css={classes.type}>No package found</div>;
@@ -81,6 +87,14 @@ const Home = props => {
 
   return (
     <div data-gm="home" className="home" css={classes.home}>
+      <Filters
+        setActualSearch={setActualSearch}
+        search={search || {}}
+        data={data || []}
+        theme={theme}
+        keywords={memoizedKeywords}
+        showFilters={showFilters}
+      />
       <Search
         theme={theme}
         onSearch={onSearch}
@@ -88,11 +102,6 @@ const Home = props => {
         isLoading={isLoading}
       />
       {getRegistry()}
-      <Filters
-        setActualSearch={setActualSearch}
-        search={search}
-        keywords={memoizedKeywords}
-      />
     </div>
   );
 };

@@ -2,12 +2,25 @@
 /* @jsx jsx */
 import React, { useState, useEffect } from 'react';
 import { jsx, css } from '@emotion/core';
+import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
 import internet from '../../../assets/internet.svg';
 import clock from '../../../assets/clock.svg';
 import jsonFormat from '../../../assets/json.svg';
 import activeBug from '../../../assets/active-virus.svg';
 import bug from '../../../assets/clean-virus.svg';
+
+const propTypes = {
+  toggleChaos: PropTypes.func,
+  theme: PropTypes.instanceOf(Object),
+  active: PropTypes.string
+};
+
+const defaultProps = {
+  toggleChaos: () => {},
+  theme: { mixins: {}, layout: {}, colors: {} },
+  active: null
+};
 
 const ChaosToggle = props => {
   // Define open or closed state
@@ -136,5 +149,8 @@ const ChaosToggle = props => {
     </div>
   );
 };
+
+ChaosToggle.propTypes = propTypes;
+ChaosToggle.defaultProps = defaultProps;
 
 export default withRouter(ChaosToggle);

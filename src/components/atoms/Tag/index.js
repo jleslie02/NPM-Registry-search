@@ -19,10 +19,10 @@ export const StatelessTag = props => {
       padding: '6px 14px',
       borderRadius: '20px',
       fontSize: '14px',
-      border: '1px solid #c0c4d2',
-      color: 'rgba(80, 80, 80, 0.87)',
+      border: `1px solid #c0c4d2`,
+      color: theme.palette.tag.color,
       cursor: 'pointer',
-      backgroundColor: '#fff',
+      backgroundColor: theme.palette.tag.background,
       ...theme.mixins.flexCenter()
     }))()
   );

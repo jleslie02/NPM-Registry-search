@@ -37,9 +37,23 @@ export const useDataApi = (
   // fetch data if search is updated
   useEffect(() => {
     let didCancel = false;
+    const isArray = obj => {
+      const objectConstructor = [].constructor;
+      return obj.constructor === objectConstructor;
+    };
 
     const fetchData = async () => {
-      if (chaosMode === null) {
+      if (chaosMode === 'internet' || !navigator.onLine) {
+        setError({
+          isError: true,
+          message:
+            'There is no internet connection. Please reconnect then reload the app.'
+        });
+        // eslint-disable-next-line no-else-return
+      } else if (
+        chaosMode === null ||
+        chaosMode === 'json'
+      ) {
         dispatch({ type: 'FETCH_INIT' });
 
         try {
@@ -53,14 +67,26 @@ export const useDataApi = (
             history.push(
               `/search?${queryString.stringify(search)}`
             );
-            // set the actual search to the current user search only if the call is successfull
-            setActualSearch(search);
-            dispatch({
-              type: 'FETCH_SUCCESS',
-              payload: result.data
-            });
-            setError({ isError: false, message: null });
-            // here push the history
+            if (
+              !isArray(result.data) ||
+              chaosMode === 'json'
+            ) {
+              dispatch({ type: 'FETCH_FAILURE' });
+              setError({
+                isError: true,
+                message:
+                  'The type of the data fetched is invalid. Please try again later.'
+              });
+            } else {
+              // set the actual search to the current user search only if the call is successfull
+              setActualSearch(search);
+              dispatch({
+                type: 'FETCH_SUCCESS',
+                payload: result.data
+              });
+              setError({ isError: false, message: null });
+              // here push the history
+            }
           }
         } catch (error) {
           if (!didCancel) {
@@ -83,7 +109,14 @@ export const useDataApi = (
   }, [search]);
 
   return [
-    { ...state, isError, message, chaosMode, search },
+    {
+      ...state,
+      isError,
+      message,
+      chaosMode,
+      search,
+      actualSearch
+    },
     setSearch,
     setActualSearch,
     setChaos,

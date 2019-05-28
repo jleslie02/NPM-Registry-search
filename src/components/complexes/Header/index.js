@@ -3,12 +3,35 @@
 import React, { useState, useEffect } from 'react';
 import { jsx, css } from '@emotion/core';
 import { withRouter } from 'react-router';
+import PropTypes from 'prop-types';
 import mascot from '../../../assets/logo-mascot.svg';
 import moon from '../../../assets/crescent-moon.svg';
 import sun from '../../../assets/sunny.svg';
 import OnOffToggle from '../../atoms/OnOffToggle';
 import ChaosToggle from '../../molecules/ChaosToggle';
 import LoadingView from '../../atoms/LoadingView';
+
+const propTypes = {
+  toggleFilters: PropTypes.func,
+  toggleTheme: PropTypes.func,
+  toggleChaos: PropTypes.func,
+  theme: PropTypes.instanceOf(Object),
+  chaosMode: PropTypes.string,
+  isLoading: PropTypes.bool,
+  showFilters: PropTypes.bool,
+  themeMode: PropTypes.string
+};
+
+const defaultProps = {
+  theme: { mixins: {}, layout: {}, colors: {} },
+  toggleFilters: () => {},
+  toggleTheme: () => {},
+  toggleChaos: () => {},
+  chaosMode: null,
+  isLoading: false,
+  showFilters: false,
+  themeMode: 'light'
+};
 
 const Header = props => {
   // Define styles
@@ -17,8 +40,9 @@ const Header = props => {
     header: css(
       (() => ({
         height: '65px',
+        background: theme.palette.header.background,
         ...theme.mixins.boxShadow(
-          '-7px -3px 10px 0px rgba(0,0,0,0.34)'
+          theme.palette.header.boxShadow
         )
       }))()
     ),
@@ -41,11 +65,8 @@ const Header = props => {
     filterToggle: css(
       (() => ({
         ' > i': {
-          textShadow: `0 0 1px #000`,
           fontSize: '28px',
-          WebkitTextFillColor: 'white', // #313131
-          WebkitTextStrokeWidth: '1.5px',
-          WebkitTextStrokeColor: '#828282', // fff
+          ...theme.palette.header.filter,
           '&.show': {
             WebkitTextFillColor: '#daea70',
             WebkitTextStrokeWidth: '2px',
@@ -121,5 +142,8 @@ const Header = props => {
     </div>
   );
 };
+
+Header.propTypes = propTypes;
+Header.defaultProps = defaultProps;
 
 export default withRouter(Header);
