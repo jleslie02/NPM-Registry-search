@@ -88,6 +88,13 @@ const Search = props => {
       onSearch(newSearch);
     }
   };
+
+  const onKeyPress = e => {
+    if (e.charCode === 13) {
+      setSearch();
+    }
+  };
+
   // const toggleOpen = () => setShowFilters(!showFilters);
 
   // End Utilities functions
@@ -104,6 +111,7 @@ const Search = props => {
         value={query}
         placeholder="Search packages..."
         onChange={e => setQuery(e.target.value)}
+        onKeyPress={onKeyPress}
       />
       <div css={classes.buttonSearch} onClick={setSearch}>
         <i className="fa fa-search" />

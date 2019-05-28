@@ -20,8 +20,7 @@ const StatefulAlerts = props => {
       (() => ({
         height: '70px',
         padding: '0 20px',
-        background:
-          'rgba(253, 116, 116, 0.5686274509803921)',
+        background: 'rgba(253, 116, 116, 0.57)',
         color: theme.palette.alert.color,
         ...theme.mixins.flexDisplay(),
         ...theme.mixins.alignItems('center')
