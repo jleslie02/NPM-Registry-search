@@ -1,5 +1,4 @@
 // @flow weak
-import { alert as cAlerts } from './colors';
 
 const colors = {
   darkBackground: '#151519'
@@ -97,8 +96,6 @@ export const dark = {
 };
 
 export const shades = { light, dark };
-export const alert = cAlerts;
-
 export default function createPalette(type) {
   return shades[type];
 }

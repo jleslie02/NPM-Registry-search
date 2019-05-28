@@ -4,9 +4,6 @@ import React, { useState, useEffect } from 'react';
 import { jsx, css } from '@emotion/core';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
-import internet from '../../../assets/internet.svg';
-import clock from '../../../assets/clock.svg';
-import jsonFormat from '../../../assets/json.svg';
 import activeBug from '../../../assets/active-virus.svg';
 import bug from '../../../assets/clean-virus.svg';
 
