@@ -124,11 +124,11 @@ const ChaosToggle = props => {
       css={classes.chaosToggle}
     >
       {/* Open the chaos options */}
-      <div css={classes.trigger} onClick={() => toggleOpen(!open)}>
-        <img src={active ? activeBug : bug} alt="mascot" />
+      <div css={classes.trigger} onClick={() => toggleOpen(!open)} data-testid="trigger">
+        <img src={active ? activeBug : bug} alt="bug" data-testid="bug" />
       </div>
       {/* List out all the chaos options */}
-      <div css={classes.icons} className={`${open ? "open" : ""}`}>
+      <div css={classes.icons} className={`${open ? "open" : ""}`} data-testid="icons-chaos">
         <div css={classes.title}>Chaos</div>
         {images.map(image => {
           return (
@@ -136,6 +136,7 @@ const ChaosToggle = props => {
               key={`${image.name || "reset"}-chaos`}
               css={classes.image}
               className={image.name || "reset"}
+              data-testid={`chaos-${image.name || "stop"}`}
               onClick={() => onChange(image.name)}
             >
               <span className={image.icon} />

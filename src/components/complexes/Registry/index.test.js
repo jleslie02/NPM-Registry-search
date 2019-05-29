@@ -1,4 +1,3 @@
-import React from "react";
 import { getByTestId, cleanup } from "react-testing-library";
 
 import { themedRender } from "../../../test-utils";

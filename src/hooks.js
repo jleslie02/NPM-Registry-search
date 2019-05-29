@@ -127,10 +127,3 @@ export const useDataApi = (initialSearch, initialData) => {
     setError
   ];
 };
-
-export const useFiltersApi = () => {
-  const [toggleFilter, setToggleFilter] = useState(null);
-  const [sortFilter, setSortFilter] = useState(null);
-
-  return [toggleFilter, sortFilter, setToggleFilter, setSortFilter];
-};

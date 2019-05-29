@@ -101,7 +101,9 @@ const FilterInput = props => {
           value: opt,
           label: opt
         }))}
+        data-testid="selectInput"
         styles={customStyles}
+        className="select"
         isMulti={type === "multiSelect"}
         isSearchable={type === "multiSelect"}
       />
@@ -263,7 +265,7 @@ const FilterItem = props => {
           />
           {/* Button group to save or cancel */}
           {type !== "toggle" && (
-            <div css={classes.buttonGroup}>
+            <div css={classes.buttonGroup} className="buttonGroup">
               <button type="button" onClick={resetCurrent}>
                 cancel
               </button>

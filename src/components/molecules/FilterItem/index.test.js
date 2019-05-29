@@ -1,9 +1,8 @@
-import React from "react";
-import ReactTestUtils from "react-dom/test-utils";
-import ShallowRenderer from "react-test-renderer/shallow";
-import { getByTestId, fireEvent, cleanup } from "react-testing-library";
+import ReactDOM from 'react-dom';
+import { act, Simulate} from 'react-dom/test-utils';
+import {  fireEvent, cleanup } from "react-testing-library";
 
-import { themedRender } from "../../../test-utils";
+import { themedRender, themedComponent } from "../../../test-utils";
 import FilterItem from "./index";
 
 afterEach(cleanup);
@@ -70,7 +69,7 @@ it("Should toggle off when the value is true on a toggle filter", () => {
     type: "toggle",
     value: true
   };
-  const { getByTestId, rerender } = themedRender(FilterItem, props);
+  const { getByTestId } = themedRender(FilterItem, props);
   const wrapper = getByTestId("wrapper");
 
   fireEvent.click(wrapper);
@@ -83,32 +82,91 @@ it("Should toggle off when the value is true on a toggle filter", () => {
   expect(props.onFilterChange.mock.calls.length).toBe(1);
 });
 
-// it("Should trigger if the new text is different than the current search", () => {
-//   const props = {
-//     onSearch: jest.fn(),
-//     search: {},
-//     isLoading: false
-//   }
-//   const { container } = themedRender(Search, props);
-//   const searchInput  = getByTestId(container, "searchInput");
-//   const submitButton  = getByTestId(container, "submitButton");
+describe('Filter select should behave correctly', () => {
+  let container, props;
+  beforeEach(() => {
+    container = document.createElement('div');
+    document.body.appendChild(container);
+    props = {
+      onFilterChange: jest.fn(),
+      hasData: true,
+      type: "singleSelect",
+      value: ""
+    };
+  });
 
-//   fireEvent.change(searchInput, { target: { value: "search" } });
-//   fireEvent.click(submitButton);
-//   expect((props.onSearch.mock.calls.length)).toBe(1);
-// });
+  afterEach(() => {
+    document.body.removeChild(container);
+    container = null;
+  });
 
-// it("Should not trigger if the value of the text is the same as the value of the current query", () => {
-//   const props = {
-//     onSearch: jest.fn(),
-//     search: {q: "search"},
-//     isLoading: false
-//   }
-//   const { container } = themedRender(Search, props);
-//   const searchInput  = getByTestId(container, "searchInput");
-//   const submitButton  = getByTestId(container, "submitButton");
+  it('can render and update a the select value', () => {
+    // Test first render and componentDidMount
+    act(() => {
+      ReactDOM.render(themedComponent(FilterItem, props), container);
+    });
 
-//   fireEvent.change(searchInput, { target: { value: "search" } });
-//   fireEvent.click(submitButton);
-//   expect((props.onSearch.mock.calls.length)).toBe(0);
-// });
+    const wrapper = container.querySelector('.wrapper');
+    Simulate.click(wrapper);
+    // open the select and have the buttons
+    let filterBody = container.querySelector('.filterBody');
+    expect(filterBody.children.length).toBe(3);
+
+    const buttonGroup = container.querySelector('.buttonGroup');
+    // save should be disabled
+    expect(buttonGroup.children[1].disabled).toBe(true);
+    // cancel should be enabled
+    expect(buttonGroup.children[0].disabled).toBe(false);
+
+    act(() => {
+      Simulate.click(buttonGroup.children[0])
+      filterBody = container.querySelector('.filterBody');
+    });
+    //should close the filter body
+    expect(container.children.length).toBe(1);
+  });
+});
+
+describe('Filter select update on value change', () => {
+  let container, props;
+  beforeEach(() => {
+    container = document.createElement('div');
+    document.body.appendChild(container);
+    props = {
+      onFilterChange: jest.fn(),
+      hasData: true,
+      type: "singleSelect",
+      value: "mine",
+      defaultValue: null,
+      options: ["mine"]
+    };
+  });
+
+  afterEach(() => {
+    document.body.removeChild(container);
+    container = null;
+  });
+
+  it('can render and update a the select value', () => {
+    // Test first render and componentDidMount
+    act(() => {
+      ReactDOM.render(themedComponent(FilterItem, props), container);
+    });
+
+    const wrapper = container.querySelector('.wrapper');
+    Simulate.click(wrapper);
+    // open the select and have the buttons
+    const buttonGroup = container.querySelector('.buttonGroup');
+    const save = buttonGroup.querySelector(":nth-child(1)")
+    // save should be disabled
+    expect(save.disabled).toBe(false);
+    // cancel should be enabled
+    expect(buttonGroup.children[0].disabled).toBe(false);
+
+    act(() => {
+      Simulate.click(buttonGroup.children[0])
+    });
+    //should close the filter body
+    expect(container.children.length).toBe(1);
+  });
+});

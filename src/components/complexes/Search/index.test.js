@@ -1,5 +1,4 @@
-import React from "react";
-import { getByTestId, fireEvent, cleanup } from "react-testing-library";
+import { fireEvent, cleanup } from "react-testing-library";
 
 import { themedRender } from "../../../test-utils";
 import Search from "./index";
@@ -12,9 +11,9 @@ it("Should Not trigger a submit if search is empty", () => {
     search: {},
     isLoading: false
   };
-  const { container } = themedRender(Search, props);
-  const searchInput = getByTestId(container, "searchInput");
-  const submitButton = getByTestId(container, "submitButton");
+  const { getByTestId } = themedRender(Search, props);
+  const searchInput = getByTestId("searchInput");
+  const submitButton = getByTestId("submitButton");
 
   expect(searchInput.value).toBe("");
   fireEvent.click(submitButton);
@@ -27,9 +26,9 @@ it("Should trigger if the new text is different than the current search", () => 
     search: {},
     isLoading: false
   };
-  const { container } = themedRender(Search, props);
-  const searchInput = getByTestId(container, "searchInput");
-  const submitButton = getByTestId(container, "submitButton");
+  const { getByTestId } = themedRender(Search, props);
+  const searchInput = getByTestId("searchInput");
+  const submitButton = getByTestId("submitButton");
 
   fireEvent.change(searchInput, { target: { value: "search" } });
   fireEvent.click(submitButton);
@@ -42,9 +41,9 @@ it("Should not trigger if the value of the text is the same as the value of the 
     search: { q: "search" },
     isLoading: false
   };
-  const { container } = themedRender(Search, props);
-  const searchInput = getByTestId(container, "searchInput");
-  const submitButton = getByTestId(container, "submitButton");
+  const { getByTestId } = themedRender(Search, props);
+  const searchInput = getByTestId("searchInput");
+  const submitButton = getByTestId("submitButton");
 
   fireEvent.change(searchInput, { target: { value: "search" } });
   fireEvent.click(submitButton);

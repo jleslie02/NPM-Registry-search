@@ -86,7 +86,7 @@ const BaseOnOffToggle = props => {
       css={classes.toggle}
     >
       <div css={classes.switch}>
-        <input type="checkbox" css={classes.input} checked={checked} readOnly />
+        <input type="checkbox" css={classes.input} checked={checked} readOnly data-testid="input" />
         <span css={classes.slider} className="slider" />
       </div>
     </div>

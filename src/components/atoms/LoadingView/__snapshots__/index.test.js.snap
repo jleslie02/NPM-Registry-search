@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly with full props 1`] = `
+<div
+  className="load-bar css-lbi6ix-StatelessLoadingView"
+  data-testid="loadingView"
+>
+  <div
+    className="bar"
+  />
+  <div
+    className="bar"
+  />
+  <div
+    className="bar"
+  />
+</div>
+`;

@@ -1,5 +1,4 @@
 // Static component with conditional rendering so snapshot test should suffice
-import React from "react";
 import renderer from "react-test-renderer";
 import RegistryIem from "./index";
 import { themedComponent } from "../../../test-utils";

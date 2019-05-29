@@ -1,5 +1,4 @@
-import React from "react";
-import { getByTestId, cleanup } from "react-testing-library";
+import { cleanup } from "react-testing-library";
 
 import { themedRender, themedComponent } from "../../../test-utils";
 import Filters from "./index";
@@ -13,8 +12,8 @@ it("Should always have three filters", () => {
     keywords: [],
     data: null
   };
-  const { container } = themedRender(Filters, props);
-  const filters = getByTestId(container, "filters");
+  const { getByTestId } = themedRender(Filters, props);
+  const filters = getByTestId("filters");
 
   expect(filters.children.length).toBe(3);
 });
