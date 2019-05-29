@@ -1,0 +1,256 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly with default props 1`] = `
+<div
+  className="registryItem css-e1h06c-RegistryItem"
+  data-testid="registry-item"
+>
+  <div
+    className="css-1wumyry-RegistryItem"
+  >
+    u
+  </div>
+  <div
+    className="css-chobbe-RegistryItem"
+  >
+    <div>
+      <div
+        className="css-kk417u-RegistryItem"
+        onClick={[Function]}
+      >
+        <span />
+        <div />
+      </div>
+      <div
+        className="css-o0dv41-RegistryItem"
+      >
+        <div
+          className="user"
+        >
+          <span
+            className="fa fa-user"
+          />
+          unknown
+        </div>
+      </div>
+      <div
+        className="css-czi24t-RegistryItem"
+      />
+    </div>
+  </div>
+  <div
+    className="css-1966wl8-RegistryItem"
+  />
+  <div
+    className="css-fuf05g-RegistryItem"
+  />
+</div>
+`;
+
+exports[`renders correctly with full props 1`] = `
+<div
+  className="registryItem css-e1h06c-RegistryItem"
+  data-testid="registry-item"
+>
+  <div
+    className="css-1wumyry-RegistryItem"
+  >
+    u
+  </div>
+  <div
+    className="css-chobbe-RegistryItem"
+  >
+    <div>
+      <div
+        className="css-kk417u-RegistryItem"
+        onClick={[Function]}
+      >
+        <span>
+          a package
+        </span>
+        <div />
+      </div>
+      <div
+        className="css-o0dv41-RegistryItem"
+      >
+        <div
+          className="user"
+        >
+          <span
+            className="fa fa-user"
+          />
+          unknown
+        </div>
+      </div>
+      <div
+        className="css-czi24t-RegistryItem"
+      >
+        <div
+          className="statWrapper"
+        >
+          <span
+            className="maintenance statName"
+          >
+            maintenance
+          </span>
+          <span
+            className="statNumber"
+          >
+            90
+            %
+          </span>
+          <div
+            className="css-cmd4p3"
+          />
+        </div>
+        <div
+          className="statWrapper"
+        >
+          <span
+            className="quality statName"
+          >
+            quality
+          </span>
+          <span
+            className="statNumber"
+          >
+            90
+            %
+          </span>
+          <div
+            className="css-cmd4p3"
+          />
+        </div>
+        <div
+          className="statWrapper"
+        >
+          <span
+            className="popularity statName"
+          >
+            popularity
+          </span>
+          <span
+            className="statNumber"
+          >
+            90
+            %
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    className="css-1966wl8-RegistryItem"
+  >
+    <span
+      className="css-o20i0f"
+    >
+      unstable
+    </span>
+  </div>
+  <div
+    className="css-fuf05g-RegistryItem"
+  />
+</div>
+`;
+
+exports[`renders correctly with partial props 1`] = `
+<div
+  className="registryItem css-e1h06c-RegistryItem"
+  data-testid="registry-item"
+>
+  <div
+    className="css-1wumyry-RegistryItem"
+  >
+    u
+  </div>
+  <div
+    className="css-chobbe-RegistryItem"
+  >
+    <div>
+      <div
+        className="css-kk417u-RegistryItem"
+        onClick={[Function]}
+      >
+        <span>
+          a package
+        </span>
+        <div />
+      </div>
+      <div
+        className="css-o0dv41-RegistryItem"
+      >
+        <div
+          className="user"
+        >
+          <span
+            className="fa fa-user"
+          />
+          unknown
+        </div>
+      </div>
+      <div
+        className="css-czi24t-RegistryItem"
+      >
+        <div
+          className="statWrapper"
+        >
+          <span
+            className="maintenance statName"
+          >
+            maintenance
+          </span>
+          <span
+            className="statNumber"
+          >
+            90
+            %
+          </span>
+          <div
+            className="css-cmd4p3"
+          />
+        </div>
+        <div
+          className="statWrapper"
+        >
+          <span
+            className="quality statName"
+          >
+            quality
+          </span>
+          <span
+            className="statNumber"
+          >
+            90
+            %
+          </span>
+          <div
+            className="css-cmd4p3"
+          />
+        </div>
+        <div
+          className="statWrapper"
+        >
+          <span
+            className="popularity statName"
+          >
+            popularity
+          </span>
+          <span
+            className="statNumber"
+          >
+            90
+            %
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    className="css-1966wl8-RegistryItem"
+  />
+  <div
+    className="css-fuf05g-RegistryItem"
+  />
+</div>
+`;

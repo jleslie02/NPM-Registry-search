@@ -1,16 +1,14 @@
-/* eslint-disable no-unused-vars */
 /* @jsx jsx */
-import { jsx, css } from '@emotion/core';
-import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import isEmpty from 'ramda/src/isEmpty';
-import equals from 'ramda/src/equals';
-import { withRouter } from 'react-router';
-import Select from 'react-select';
-import { styles } from './style';
+import { jsx } from "@emotion/core";
+import React, { useState, useEffect } from "react";
+import PropTypes from "prop-types";
+import equals from "ramda/src/equals";
+import Select from "react-select";
+import { styles } from "./style";
 
 const propTypes = {
   name: PropTypes.string,
+  hasData: PropTypes.bool,
   value: PropTypes.oneOfType([
     PropTypes.instanceOf(Array),
     PropTypes.string,
@@ -33,74 +31,68 @@ const propTypes = {
 const defaultProps = {
   onFilterChange: () => {},
   theme: { mixins: {}, layout: {}, colors: {} },
-  name: 'unknown',
-  description: '',
+  name: "unknown",
+  description: "",
   defaultValue: null,
   value: null,
-  type: 'sort',
-  display: '',
+  type: "sort",
+  display: "",
   options: [],
-  search: {}
+  search: {},
+  hasData: false
 };
 
 // subcomponent
 const FilterInput = props => {
-  const {
-    onSave,
-    value,
-    classes,
-    type,
-    options,
-    setCurrentValue
-  } = props;
+  const { onSave, value, classes, type, options, setCurrentValue } = props;
 
   const customStyles = {
     option: (provided, state) => ({
       ...provided,
-      color: state.isSelected ? 'red' : 'blue'
+      color: state.isSelected ? "red" : "blue"
     }),
-    indicatorSeparator: (provided, state) => ({
+    indicatorSeparator: provided => ({
       ...provided,
-      display: 'none'
+      display: "none"
     }),
     container: provided => ({
       ...provided,
       // none of react-select's styles are passed to <Control />
-      fontSize: '14px',
-      margin: '20px 0'
+      fontSize: "14px",
+      margin: "20px 0"
     }),
     input: provided => ({
       ...provided,
-      margin: '0',
-      fontSize: '10px'
+      margin: "0",
+      fontSize: "10px"
     }),
     control: provided => ({
       ...provided,
-      minHeight: '26px',
-      height: '26px',
-      '&:focus': {
-        borderColor: '#cccccc'
+      minHeight: "26px",
+      height: "26px",
+      "&:focus": {
+        borderColor: "#cccccc"
       },
-      '> div': {
-        height: '24px'
+      "> div": {
+        height: "24px"
       }
     }),
     clearIndicator: () => ({
-      display: 'none'
+      display: "none"
     }),
-    indicatorsContainer: (provided, state) => ({
+    indicatorsContainer: provided => ({
       ...provided,
-      height: '24px'
+      height: "24px"
     }),
     singleValue: (provided, state) => {
       const opacity = state.isDisabled ? 0.5 : 1;
-      const transition = 'opacity 300ms';
+      const transition = "opacity 300ms";
 
       return { ...provided, opacity, transition };
     }
   };
 
-  if (type === 'multiSelect' || type === 'singleSelect') {
+  if (type === "multiSelect" || type === "singleSelect") {
     return (
       <Select
         value={!value ? null : { value, label: value }}
@@ -110,21 +102,23 @@ const FilterInput = props => {
           label: opt
         }))}
         styles={customStyles}
-        isMulti={type === 'multiSelect'}
-        isSearchable={type === 'multiSelect'}
+        isMulti={type === "multiSelect"}
+        isSearchable={type === "multiSelect"}
       />
     );
   }
   return (
-    <div css={classes.toggle}>
+    <div css={classes.toggle} data-testid="toggle">
       <div
-        className={`${value === true ? 'selected' : ''}`}
+        className={`${value === true ? "selected" : ""}`}
+        data-testid="on-toggle"
         onClick={() => onSave(true)}
       >
         ON
       </div>
       <div
-        className={`${!value ? 'selected' : ''}`}
+        className={`${!value ? "selected" : ""}`}
+        data-testid="off-toggle"
         onClick={() => onSave(false)}
       >
         OFF
@@ -174,19 +168,19 @@ const FilterItem = props => {
   };
 
   const filterIcons = {
-    ranking: 'fa fa-key',
-    keywords: 'fa fa-search',
-    stableonly: 'fa fa-balance-scale'
+    ranking: "fa fa-key",
+    keywords: "fa fa-search",
+    stableonly: "fa fa-balance-scale"
   };
 
   const displayValue = () => {
-    if (value && typeof value === 'object') {
-      return value.length === 0 ? 'Any' : value.join(', ');
+    if (value && typeof value === "object") {
+      return value.length === 0 ? "Any" : value.join(", ");
     }
-    if (typeof value === 'boolean') {
-      return value ? 'On' : 'Off';
+    if (typeof value === "boolean") {
+      return value ? "On" : "Off";
     }
-    return value || 'Any';
+    return value || "Any";
   };
 
   // mutate the current value
@@ -226,15 +220,14 @@ const FilterItem = props => {
 
   return (
     <div
-      data-gm="filter-item"
-      className={`${open ? 'open' : ''} filterItem `}
+      data-testid="filterItem"
+      className={`${open ? "open" : ""} filterItem `}
       css={classes.filterItem}
     >
       <div
         css={classes.wrapper}
-        className={`wrapper ${
-          equals(defaultValue, value) ? '' : 'isSet'
-        }`}
+        data-testid="wrapper"
+        className={`wrapper ${equals(defaultValue, value) ? "" : "isSet"}`}
         onClick={changeOpenState}
       >
         <div css={classes.icon} className="icon">
@@ -251,7 +244,11 @@ const FilterItem = props => {
         )}
       </div>
       {open && (
-        <div css={classes.filterBody}>
+        <div
+          css={classes.filterBody}
+          className="filterBody"
+          data-testid="filterBody"
+        >
           {/* Filter description */}
           <div css={classes.title}>{description}</div>
           {/* Filter input */}
@@ -265,7 +262,7 @@ const FilterItem = props => {
             classes={classes}
           />
           {/* Button group to save or cancel */}
-          {type !== 'toggle' && (
+          {type !== "toggle" && (
             <div css={classes.buttonGroup}>
               <button type="button" onClick={resetCurrent}>
                 cancel
@@ -288,4 +285,4 @@ const FilterItem = props => {
 FilterItem.propTypes = propTypes;
 FilterItem.defaultProps = defaultProps;
 
-export default withRouter(FilterItem);
+export default FilterItem;

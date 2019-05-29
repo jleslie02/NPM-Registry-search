@@ -1,14 +1,9 @@
 /* eslint-disable prefer-promise-reject-errors */
-/* eslint-disable no-unused-vars */
 /* eslint-disable import/prefer-default-export */
-import React, {
-  useState,
-  useEffect,
-  useReducer
-} from 'react';
-import axios from 'axios';
-import queryString from 'query-string';
-import { dataFetchReducer } from './reducers';
+import React, { useState, useEffect, useReducer } from "react";
+import axios from "axios";
+import queryString from "query-string";
+import { dataFetchReducer } from "./reducers";
 
 // A promise that throttle the api request for 8 seconds
 const timeoutPromise = () =>
@@ -17,28 +12,21 @@ const timeoutPromise = () =>
       clearTimeout(id);
       reject({
         error:
-          'It is taking too long to fetch the data. Please try again later.'
+          "It is taking too long to fetch the data. Please try again later."
       });
     }, 8000);
   });
 
-export const useDataApi = (
-  initialSearch,
-  initialData,
-  initialHistory
-) => {
+export const useDataApi = (initialSearch, initialData) => {
   // Set search query, error and chaos mode state < from user input
   const [search, setSearch] = useState(initialSearch);
   // Search query for the current page
-  const [actualSearch, setActualSearch] = useState(
-    initialSearch
-  );
+  const [actualSearch, setActualSearch] = useState(initialSearch);
   const [{ isError, message }, setError] = useState({
     isError: false,
     message: null
   });
   const [chaosMode, setChaos] = useState(null);
-  const [history, setHistory] = useState(initialHistory);
 
   // connect reducers
   const [state, dispatch] = useReducer(dataFetchReducer, {
@@ -56,19 +44,19 @@ export const useDataApi = (
     };
 
     const fetchData = async () => {
-      if (chaosMode === 'internet' || !navigator.onLine) {
+      if (chaosMode === "internet" || !navigator.onLine) {
         setError({
           isError: true,
           message:
-            'There is no internet connection. Please reconnect then reload the app.'
+            "There is no internet connection. Please reconnect then reload the app."
         });
         // eslint-disable-next-line no-else-return
-      } else if (chaosMode !== 'internet') {
-        dispatch({ type: 'FETCH_INIT' });
+      } else if (chaosMode !== "internet") {
+        dispatch({ type: "FETCH_INIT" });
         try {
           let result = null;
 
-          if (chaosMode === 'clock') {
+          if (chaosMode === "clock") {
             result = await Promise.all([
               timeoutPromise(),
               axios(
@@ -86,24 +74,18 @@ export const useDataApi = (
           }
 
           if (!didCancel) {
-            history.push(
-              `/search?${queryString.stringify(search)}`
-            );
-            if (
-              !isArray(result.data) ||
-              chaosMode === 'json'
-            ) {
-              dispatch({ type: 'FETCH_FAILURE' });
+            if (!isArray(result.data) || chaosMode === "json") {
+              dispatch({ type: "FETCH_FAILURE" });
               setError({
                 isError: true,
                 message:
-                  'The type of the data fetched is invalid. Please try again later.'
+                  "The type of the data fetched is invalid. Please try again later."
               });
             } else {
               // set the actual search to the current user search only if the call is successfull
               setActualSearch(search);
               dispatch({
-                type: 'FETCH_SUCCESS',
+                type: "FETCH_SUCCESS",
                 payload: result.data
               });
               setError({ isError: false, message: null });
@@ -112,11 +94,10 @@ export const useDataApi = (
           }
         } catch (error) {
           if (!didCancel) {
-            dispatch({ type: 'FETCH_FAILURE' });
+            dispatch({ type: "FETCH_FAILURE" });
             setError({
               isError: true,
-              message:
-                error.error || 'We are unable to fetch data'
+              message: error.error || "We are unable to fetch data"
             });
             // here push the history
           }
@@ -151,10 +132,5 @@ export const useFiltersApi = () => {
   const [toggleFilter, setToggleFilter] = useState(null);
   const [sortFilter, setSortFilter] = useState(null);
 
-  return [
-    toggleFilter,
-    sortFilter,
-    setToggleFilter,
-    setSortFilter
-  ];
+  return [toggleFilter, sortFilter, setToggleFilter, setSortFilter];
 };

@@ -1,11 +1,9 @@
-/* eslint-disable no-unused-vars */
 /* @jsx jsx */
-import React, { useState, useEffect } from 'react';
-import { jsx, css } from '@emotion/core';
-import PropTypes from 'prop-types';
-import { withRouter } from 'react-router';
-import activeBug from '../../../assets/active-virus.svg';
-import bug from '../../../assets/clean-virus.svg';
+import React, { useState } from "react";
+import { jsx, css } from "@emotion/core";
+import PropTypes from "prop-types";
+import activeBug from "../../../assets/active-virus.svg";
+import bug from "../../../assets/clean-virus.svg";
 
 const propTypes = {
   toggleChaos: PropTypes.func,
@@ -28,22 +26,22 @@ const ChaosToggle = props => {
   const classes = {
     chaosToggle: css(
       (() => ({
-        position: 'relative',
-        height: '50px',
-        padding: '0 20px',
+        position: "relative",
+        height: "50px",
+        padding: "0 20px",
         ...theme.mixins.flexDisplay(),
-        ...theme.mixins.alignItems('center'),
-        ...theme.mixins.justifyContent('space-between')
+        ...theme.mixins.alignItems("center"),
+        ...theme.mixins.justifyContent("space-between")
       }))()
     ),
 
     trigger: css(
       (() => ({
         ...theme.mixins.flexDisplay(),
-        ...theme.mixins.alignItems('center'),
-        cursor: 'pointer',
-        '> img': {
-          width: '54px'
+        ...theme.mixins.alignItems("center"),
+        cursor: "pointer",
+        "> img": {
+          width: "54px"
         }
       }))()
     ),
@@ -51,58 +49,58 @@ const ChaosToggle = props => {
     icons: css(
       (() => ({
         ...theme.mixins.flexDisplay(),
-        ...theme.mixins.flexDirection('column'),
-        position: 'absolute',
-        top: '54px',
-        height: '0',
-        overflow: 'hidden',
-        padding: '0',
-        border: '0 solid rgba(0, 0, 0, 0.39)',
-        left: '9px',
-        ...theme.mixins.transition('all 0.4s ease-in-out'),
-        zIndex: '2',
-        background: '#ffffff',
-        width: '110px',
-        '&.open': {
-          height: '150px',
-          border: '1px solid rgba(0, 0, 0, 0.39)',
-          padding: '7px 10px',
-          borderRadius: '15px',
-          ...theme.mixins.transition('all 0.4s ease-in-out')
+        ...theme.mixins.flexDirection("column"),
+        position: "absolute",
+        top: "54px",
+        height: "0",
+        overflow: "hidden",
+        padding: "0",
+        border: "0 solid rgba(0, 0, 0, 0.39)",
+        left: "9px",
+        ...theme.mixins.transition("all 0.4s ease-in-out"),
+        zIndex: "2",
+        background: "#ffffff",
+        width: "110px",
+        "&.open": {
+          height: "150px",
+          border: "1px solid rgba(0, 0, 0, 0.39)",
+          padding: "7px 10px",
+          borderRadius: "15px",
+          ...theme.mixins.transition("all 0.4s ease-in-out")
         },
-        '> div': {
-          cursor: 'pointer',
+        "> div": {
+          cursor: "pointer",
           ...theme.mixins.flexDisplay(),
-          ...theme.mixins.alignItems('center'),
-          backgroundSize: 'contain',
-          color: '#505050',
-          ':not(:nth-of-type(1))': {
-            marginTop: '8px'
+          ...theme.mixins.alignItems("center"),
+          backgroundSize: "contain",
+          color: "#505050",
+          ":not(:nth-of-type(1))": {
+            marginTop: "8px"
           },
-          '> .fa': {
-            fontSize: '18px',
-            marginRight: '10px'
+          "> .fa": {
+            fontSize: "18px",
+            marginRight: "10px"
           },
-          '&.internet .fa': {
-            color: '#0061b9'
+          "&.internet .fa": {
+            color: "#0061b9"
           },
-          '&.clock .fa': {
-            color: '#ff6e00'
+          "&.clock .fa": {
+            color: "#ff6e00"
           },
-          '&.reset .fa': {
-            color: '#d83c3c'
+          "&.reset .fa": {
+            color: "#d83c3c"
           },
-          '&.json .fa': {
-            color: '#008000'
+          "&.json .fa": {
+            color: "#008000"
           }
         }
       }))()
     ),
     title: css({
-      color: '#767676',
-      borderBottom: '1px solid #e5e5e5',
-      padding: '5px 0',
-      fontSize: '12px'
+      color: "#767676",
+      borderBottom: "1px solid #e5e5e5",
+      padding: "5px 0",
+      fontSize: "12px"
     })
   };
 
@@ -113,41 +111,35 @@ const ChaosToggle = props => {
   };
 
   const images = [
-    { name: null, icon: 'fa fa-ban' },
-    { name: 'internet', icon: 'fa fa-globe' },
-    { name: 'clock', icon: 'fa fa-clock-o' },
-    { name: 'json', icon: 'fa fa-file' }
+    { name: null, icon: "fa fa-ban" },
+    { name: "internet", icon: "fa fa-globe" },
+    { name: "clock", icon: "fa fa-clock-o" },
+    { name: "json", icon: "fa fa-file" }
   ];
 
   return (
     <div
-      data-gm="chaosToggle"
+      data-testid="chaosToggle"
       className="chaosToggle"
       css={classes.chaosToggle}
     >
       {/* Open the chaos options */}
-      <div
-        css={classes.trigger}
-        onClick={() => toggleOpen(!open)}
-      >
+      <div css={classes.trigger} onClick={() => toggleOpen(!open)}>
         <img src={active ? activeBug : bug} alt="mascot" />
       </div>
       {/* List out all the chaos options */}
-      <div
-        css={classes.icons}
-        className={`${open ? 'open' : ''}`}
-      >
+      <div css={classes.icons} className={`${open ? "open" : ""}`}>
         <div css={classes.title}>Chaos</div>
         {images.map(image => {
           return (
             <div
-              key={`${image.name || 'reset'}-chaos`}
+              key={`${image.name || "reset"}-chaos`}
               css={classes.image}
-              className={image.name || 'reset'}
+              className={image.name || "reset"}
               onClick={() => onChange(image.name)}
             >
               <span className={image.icon} />
-              {image.name || 'Stop'}
+              {image.name || "Stop"}
             </div>
           );
         })}
@@ -159,4 +151,4 @@ const ChaosToggle = props => {
 ChaosToggle.propTypes = propTypes;
 ChaosToggle.defaultProps = defaultProps;
 
-export default withRouter(ChaosToggle);
+export default ChaosToggle;

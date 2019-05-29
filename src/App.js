@@ -1,22 +1,17 @@
-/* eslint-disable no-unused-vars */
 /* @jsx jsx */
-import React, { useState, useEffect, useMemo } from 'react';
-import { jsx, css } from '@emotion/core';
-import { ThemeProvider } from 'emotion-theming';
-import queryString from 'query-string';
-import includes from 'ramda/src/includes';
-import { withRouter } from 'react-router';
-import Header from './components/complexes/Header';
-import Alerts from './components/molecules/Alerts';
-import makeAtomicTheme from './theme';
+import React, { useState, useEffect, useMemo } from "react";
+import { jsx, css } from "@emotion/core";
+import { ThemeProvider } from "emotion-theming";
+import includes from "ramda/src/includes";
+import Header from "./components/complexes/Header";
+import Alerts from "./components/molecules/Alerts";
+import makeAtomicTheme from "./theme";
 
-import './styles.css';
-import { useDataApi } from './hooks';
-import Home from './components/pages/home';
+import "./styles.css";
+import { useDataApi } from "./hooks";
+import Home from "./components/pages/home";
 
-const App = props => {
-  const { history } = props;
-
+const App = () => {
   // App States
   const [{ height, width }, setDimensions] = useState({
     height: null,
@@ -24,23 +19,16 @@ const App = props => {
   });
   // Choose your app theme
   const [theme, setTheme] = useState(makeAtomicTheme());
-  const [mode, setMode] = useState('light');
+  const [mode, setMode] = useState("light");
 
   // Instantiate app state and filters
   const [
-    {
-      data,
-      isError,
-      message,
-      isLoading,
-      chaosMode,
-      actualSearch
-    },
+    { data, isError, message, isLoading, chaosMode, actualSearch },
     fetchData,
     setActualSearch,
     setChaosMode,
     setError
-  ] = useDataApi(null, null, history);
+  ] = useDataApi(null, null);
 
   // Choose how you want your api to fail
   const [showFilters, setShowFilters] = useState(false);
@@ -52,15 +40,11 @@ const App = props => {
   // on window resize
   const updateDimensions = () => {
     const { documentElement } = document;
-    const body = document.getElementsByTagName('body')[0];
+    const body = document.getElementsByTagName("body")[0];
     const newHeight =
-      window.innerHeight ||
-      documentElement.clientHeight ||
-      body.clientHeight;
+      window.innerHeight || documentElement.clientHeight || body.clientHeight;
     const newWidth =
-      window.innerWidth ||
-      documentElement.clientWidth ||
-      body.clientWidth;
+      window.innerWidth || documentElement.clientWidth || body.clientWidth;
     setDimensions({ height: newHeight, width: newWidth });
   };
 
@@ -70,9 +54,9 @@ const App = props => {
     if (height === null) {
       updateDimensions();
     }
-    window.addEventListener('resize', updateDimensions);
+    window.addEventListener("resize", updateDimensions);
     return () => {
-      window.removeEventListener('resize', updateDimensions);
+      window.removeEventListener("resize", updateDimensions);
     };
   }, []);
 
@@ -86,10 +70,8 @@ const App = props => {
   // Utilities functions
 
   const toggleChaosMoode = newMode => setChaosMode(newMode);
-  const toggleTheme = () =>
-    setMode(`${mode === 'light' ? 'dark' : 'light'}`);
-  const toggleShowFilters = () =>
-    setShowFilters(!showFilters);
+  const toggleTheme = () => setMode(`${mode === "light" ? "dark" : "light"}`);
+  const toggleShowFilters = () => setShowFilters(!showFilters);
 
   const filteredData = useMemo(() => {
     if (!data || data.length === 0) return data;
@@ -97,7 +79,7 @@ const App = props => {
     const filters = actualSearch || {};
     let newData = data;
     // Filter by rank if available
-    if ((filters.ranking || '').length > 0) {
+    if ((filters.ranking || "").length > 0) {
       newData.sort((itemA, itemB) => {
         return (
           itemB.score.detail[filters.ranking] -
@@ -115,10 +97,7 @@ const App = props => {
     // filter by keywords if available
     if (filters.keywords) {
       newData = newData.filter(item => {
-        return includes(
-          filters.keywords,
-          item.package.keywords || []
-        );
+        return includes(filters.keywords, item.package.keywords || []);
       });
     }
 
@@ -137,20 +116,15 @@ const App = props => {
   const app = css(
     (() => ({
       ...theme.mixins.flexDisplay(),
-      ...theme.mixins.flexDirection('column'),
-      ...theme.mixins.justifyContent('space-between'),
+      ...theme.mixins.flexDirection("column"),
+      ...theme.mixins.justifyContent("space-between"),
       backgroundColor: theme.palette.app.background
     }))()
   );
 
   return (
     <ThemeProvider theme={theme}>
-      <div
-        data-gm="app"
-        className="app"
-        style={{ height }}
-        css={app}
-      >
+      <div data-testid="app" className="app" style={{ height }} css={app}>
         <Header
           isLoading={isLoading}
           height={height}
@@ -164,9 +138,7 @@ const App = props => {
           toggleTheme={toggleTheme}
         />
         <Alerts
-          removeError={() =>
-            setError({ isError: null, message: null })
-          }
+          removeError={() => setError({ isError: null, message: null })}
           theme={theme}
           isError={isError}
           message={message}
@@ -187,4 +159,4 @@ const App = props => {
   );
 };
 
-export default withRouter(App);
+export default App;

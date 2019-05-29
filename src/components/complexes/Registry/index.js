@@ -1,12 +1,11 @@
-/* eslint-disable no-unused-vars */
 /* @jsx jsx */
-import React from 'react';
-import { jsx, css } from '@emotion/core';
-import PropTypes from 'prop-types';
-import CSSTransitionGroup from 'react-addons-css-transition-group';
-import RegistryItem from '../../molecules/RegistryItem';
+import React from "react";
+import { jsx, css } from "@emotion/core";
+import PropTypes from "prop-types";
+import CSSTransitionGroup from "react-addons-css-transition-group";
+import RegistryItem from "../../molecules/RegistryItem";
 
-import './transitions.css';
+import "./transitions.css";
 
 const propTypes = {
   data: PropTypes.instanceOf(Array),
@@ -26,27 +25,21 @@ const Registry = props => {
     registry: css({
       ...theme.mixins.flexDisplay(),
       background: theme.palette.registry.background,
-      height: '100%',
-      marginTop: '15px',
-      borderTop: `1px solid ${
-        theme.palette.registry.borderTopColor
-      }`,
-      '> div': {
-        width: '100%',
-        height: 'calc(100% - 150px)',
-        overflow: 'scroll',
-        padding: '0 20px'
+      height: "100%",
+      marginTop: "15px",
+      borderTop: `1px solid ${theme.palette.registry.borderTopColor}`,
+      "> div": {
+        width: "100%",
+        height: "calc(100% - 150px)",
+        overflow: "scroll",
+        padding: "0 20px"
       }
     }),
     item: css((() => ({}))())
   };
 
   return (
-    <div
-      data-gm="registry"
-      className="registry"
-      css={classes.registry}
-    >
+    <div data-testid="registry" className="registry" css={classes.registry}>
       <CSSTransitionGroup
         component="div"
         transitionName="registry"
@@ -56,7 +49,7 @@ const Registry = props => {
         {data.map(item => {
           return (
             <RegistryItem
-              key={item.package.name}
+              key={(item.package || {}).name || "no-name"}
               score={item.score}
               data={item.package}
               flags={item.flags}

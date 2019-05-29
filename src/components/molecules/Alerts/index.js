@@ -1,7 +1,7 @@
 /* @jsx jsx */
-import React from 'react';
-import { jsx, css } from '@emotion/core';
-import PropTypes from 'prop-types';
+import React from "react";
+import { jsx, css } from "@emotion/core";
+import PropTypes from "prop-types";
 
 const propTypes = {
   message: PropTypes.string,
@@ -9,7 +9,7 @@ const propTypes = {
 };
 
 const defaultProps = {
-  message: '',
+  message: "",
   isError: false
 };
 
@@ -18,19 +18,19 @@ const StatefulAlerts = props => {
   const classes = {
     alert: css(
       (() => ({
-        height: '70px',
-        padding: '0 20px',
-        background: 'rgba(253, 116, 116, 0.57)',
+        height: "70px",
+        padding: "0 20px",
+        background: "rgba(253, 116, 116, 0.57)",
         color: theme.palette.alert.color,
         ...theme.mixins.flexDisplay(),
-        ...theme.mixins.alignItems('center')
+        ...theme.mixins.alignItems("center")
       }))()
     )
   };
   if (!isError) return null;
 
   return (
-    <div data-gm="alerts" css={classes.alert}>
+    <div data-testid="alerts" css={classes.alert}>
       {message}
     </div>
   );

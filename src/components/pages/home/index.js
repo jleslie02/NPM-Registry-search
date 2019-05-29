@@ -1,17 +1,16 @@
-/* eslint-disable no-unused-vars */
 /* @jsx jsx */
-import React, { useMemo } from 'react';
-import { jsx, css } from '@emotion/core';
-import PropTypes from 'prop-types';
-import pluck from 'ramda/src/pluck';
-import flatten from 'ramda/src/flatten';
-import uniq from 'ramda/src/uniq';
-import identity from 'ramda/src/identity';
-import filter from 'ramda/src/filter';
-import pipe from 'ramda/src/pipe';
-import Search from '../../complexes/Search';
-import Registry from '../../complexes/Registry';
-import Filters from '../../complexes/Filters';
+import React, { useMemo } from "react";
+import { jsx, css } from "@emotion/core";
+import PropTypes from "prop-types";
+import pluck from "ramda/src/pluck";
+import flatten from "ramda/src/flatten";
+import uniq from "ramda/src/uniq";
+import identity from "ramda/src/identity";
+import filter from "ramda/src/filter";
+import pipe from "ramda/src/pipe";
+import Search from "../../complexes/Search";
+import Registry from "../../complexes/Registry";
+import Filters from "../../complexes/Filters";
 
 const propTypes = {
   onSearch: PropTypes.func,
@@ -43,15 +42,15 @@ const Home = props => {
   // Define style
   const classes = {
     home: css({
-      height: '100%',
-      overflow: 'hidden'
+      height: "100%",
+      overflow: "hidden"
     }),
     type: css(
       (() => ({
-        height: '80%',
+        height: "80%",
         ...theme.mixins.flexCenter(),
         color: theme.palette.registry.color,
-        fontSize: '25px',
+        fontSize: "25px",
         background: theme.palette.registry.background
       }))()
     )
@@ -60,8 +59,8 @@ const Home = props => {
 
   const memoizedKeywords = useMemo(() => {
     return pipe(
-      pluck('package'),
-      pluck('keywords'), // pluck out all keywords
+      pluck("package"),
+      pluck("keywords"), // pluck out all keywords
       flatten, // flatten
       uniq, // remove dups
       filter(identity) // remove undefined vars
@@ -74,9 +73,7 @@ const Home = props => {
    */
   const getRegistry = () => {
     if (!data) {
-      return (
-        <div css={classes.type}>Type in a package...</div>
-      );
+      return <div css={classes.type}>Type in a package...</div>;
     }
     if (data.length === 0) {
       return <div css={classes.type}>No package found</div>;
@@ -86,7 +83,7 @@ const Home = props => {
   };
 
   return (
-    <div data-gm="home" className="home" css={classes.home}>
+    <div data-testid="home" className="home" css={classes.home}>
       <Filters
         setActualSearch={setActualSearch}
         search={search || {}}

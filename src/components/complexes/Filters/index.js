@@ -1,17 +1,16 @@
-/* eslint-disable no-unused-vars */
 /* @jsx jsx */
-import React, { useState } from 'react';
-import { jsx, css } from '@emotion/core';
-import PropTypes from 'prop-types';
-import { withRouter } from 'react-router';
-import FilterItem from '../../molecules/FilterItem';
+import React from "react";
+import { jsx, css } from "@emotion/core";
+import PropTypes from "prop-types";
+import FilterItem from "../../molecules/FilterItem";
 
 const propTypes = {
   setActualSearch: PropTypes.func,
   search: PropTypes.instanceOf(Object),
   keywords: PropTypes.instanceOf(Array),
-  isLoading: PropTypes.bool,
-  theme: PropTypes.instanceOf(Object)
+  data: PropTypes.instanceOf(Array),
+  theme: PropTypes.instanceOf(Object),
+  showFilters: PropTypes.bool
 };
 
 const defaultProps = {
@@ -19,43 +18,30 @@ const defaultProps = {
   theme: { mixins: {}, layout: {}, colors: {} },
   search: {},
   keywords: [],
-  isLoading: false
+  data: null,
+  showFilters: false
 };
 
 const Filters = props => {
-  const {
-    search,
-    keywords,
-    setActualSearch,
-    isLoading,
-    data,
-    showFilters,
-    theme
-  } = props;
+  const { search, keywords, setActualSearch, data, showFilters, theme } = props;
 
   // Define styles
   const classes = {
     filters: css(
       (() => ({
         background: theme.palette.filters.background,
-        ...theme.mixins.boxShadow(
-          theme.palette.filters.boxShadow
-        ),
-        padding: '10px 0'
+        ...theme.mixins.boxShadow(theme.palette.filters.boxShadow),
+        padding: "10px 0"
       }))()
     ),
     wrapper: css(
       (() => ({
-        ...theme.mixins.boxShadow(
-          theme.palette.filters.boxShadow
-        ),
-        maxHeight: '0',
-        overflow: 'hidden',
-        ...theme.mixins.transition(
-          'max-height 0.4s ease-in-out'
-        ),
-        '&.open': {
-          maxHeight: '150px'
+        ...theme.mixins.boxShadow(theme.palette.filters.boxShadow),
+        maxHeight: "0",
+        overflow: "hidden",
+        ...theme.mixins.transition("max-height 0.4s ease-in-out"),
+        "&.open": {
+          maxHeight: "150px"
         }
       }))()
     )
@@ -63,30 +49,29 @@ const Filters = props => {
 
   const filters = [
     {
-      name: 'ranking',
-      display: 'Sort By',
-      value: search.ranking || '',
-      defaultValue: '',
-      description: 'Sort by packages stats.',
-      type: 'singleSelect',
-      options: ['popularity', 'maintenance', 'quality']
+      name: "ranking",
+      display: "Sort By",
+      value: search.ranking || "",
+      defaultValue: "",
+      description: "Sort by packages stats.",
+      type: "singleSelect",
+      options: ["popularity", "maintenance", "quality"]
     },
     {
-      name: 'stableonly',
-      display: 'Stable Only',
+      name: "stableonly",
+      display: "Stable Only",
       defaultValue: false,
       value: search.stableonly || false,
-      type: 'toggle',
-      description: 'Filter out unstable packages.'
+      type: "toggle",
+      description: "Filter out unstable packages."
     },
     {
-      name: 'keywords',
-      display: 'Has keyword',
-      value: search.keywords || '',
-      defaultValue: '',
-      type: 'singleSelect',
-      description:
-        'Display packages with specific keywords.',
+      name: "keywords",
+      display: "Has keyword",
+      value: search.keywords || "",
+      defaultValue: "",
+      type: "singleSelect",
+      description: "Display packages with specific keywords.",
       options: keywords
     }
   ];
@@ -94,10 +79,11 @@ const Filters = props => {
   return (
     <div
       css={classes.wrapper}
-      className={`${showFilters ? 'open' : ''}`}
+      data-testid="wrapper"
+      className={`${showFilters ? "open" : ""}`}
     >
       <div
-        data-gm="filters"
+        data-testid="filters"
         className="filters"
         css={classes.filters}
       >
@@ -109,7 +95,7 @@ const Filters = props => {
               search={search}
               theme={theme}
               onFilterChange={setActualSearch}
-              hasData={data.length > 0}
+              hasData={(data || []).length > 0}
             />
           );
         })}
@@ -121,4 +107,4 @@ const Filters = props => {
 Filters.propTypes = propTypes;
 Filters.defaultProps = defaultProps;
 
-export default withRouter(Filters);
+export default Filters;

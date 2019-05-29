@@ -1,8 +1,8 @@
 /** @jsx jsx */
 // eslint-disable-next-line no-unused-vars
-import React from 'react';
-import { jsx, css, keyframes } from '@emotion/core';
-import PropTypes from 'prop-types';
+import React from "react";
+import { jsx, css, keyframes } from "@emotion/core";
+import PropTypes from "prop-types";
 
 const propTypes = {
   loading: PropTypes.bool
@@ -23,32 +23,28 @@ const loading = keyframes`
 export const StatelessLoadingView = props => {
   const loadingStyle = css(
     (() => ({
-      position: 'relative',
-      width: '100%',
-      height: '6px',
+      position: "relative",
+      width: "100%",
+      height: "6px",
       backgroundImage: `linear-gradient(to right ,rgba(82,82,82,0.87),rgba(164, 230, 77, 0.67))`,
-      '.bar': {
+      ".bar": {
         content: `""`,
-        display: 'inline',
-        position: 'absolute',
-        width: '0',
-        height: '100%',
-        left: '50%',
-        textAlign: 'center',
-        ':nth-of-type(1)': {
+        display: "inline",
+        position: "absolute",
+        width: "0",
+        height: "100%",
+        left: "50%",
+        textAlign: "center",
+        ":nth-of-type(1)": {
           backgroundImage: `linear-gradient(to right ,rgba(115, 109, 109, 0.87),rgba(255, 134, 10, 0.97))`,
           animation: `${
-            props.loading
-              ? `${loading} 2s linear 1s infinite`
-              : 'none'
+            props.loading ? `${loading} 2s linear 1s infinite` : "none"
           }`
         },
-        ':nth-of-type(2)': {
+        ":nth-of-type(2)": {
           backgroundImage: `linear-gradient(to right ,rgba(107, 97, 97, 0.87),rgba(255, 226, 21, 0.97))`,
           animation: `${
-            props.loading
-              ? `${loading} 2s linear 2s infinite`
-              : 'none'
+            props.loading ? `${loading} 2s linear 2s infinite` : "none"
           }`
         }
       }
@@ -56,7 +52,7 @@ export const StatelessLoadingView = props => {
   );
 
   return (
-    <div className="load-bar" css={loadingStyle}>
+    <div className="load-bar" css={loadingStyle} data-testid="loadingView">
       <div className="bar" />
       <div className="bar" />
       <div className="bar" />

@@ -1,22 +1,29 @@
 {
+
   "extends": [
     "airbnb",
-    "prettier",
-    "prettier/react",
-    "plugin:react/recommended"
+    "eslint:recommended",
+    "plugin:react/recommended" 
   ],
-  "plugins": ["prettier"],
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "env": {
+    "es6": true,
+    "browser": true,
+    "jest": true
+  },
   "rules": {
-    "react/jsx-uses-react": true,
+    "react/jsx-uses-vars": 1,
+    "react/react-in-jsx-scope": 1,
+    "react/jsx-uses-react": "error",
     "react/jsx-filename-extension": [
       1,
       {
         "extensions": [".js", ".jsx"]
       }
-    ],
-    "semi": [
-      2,
-      "always"
     ],
     "react/prop-types": 0,
     "no-underscore-dangle": 0,
