@@ -19,7 +19,7 @@ it("Should Open the chaos on click", () => {
   expect(icons.className.includes("open")).toBe(true);
   // should show all options
   expect(icons.children.length).toBe(5);
-  expect(bug.src).toBe("http://localhost/clean-virus.svg");
+  expect(bug.src.includes("clean-virus.svg")).toBe(true);
 });
 
 it("Should close the menu on click of a chaos", () => {
@@ -32,7 +32,7 @@ it("Should close the menu on click of a chaos", () => {
   const bug = getByTestId("bug");
 
   // virus should be lit
-  expect(bug.src).toBe("http://localhost/active-virus.svg");
+  expect(bug.src.includes("active-virus.svg")).toBe(true);
 
   fireEvent.click(trigger);
   const icons = getByTestId("icons-chaos");

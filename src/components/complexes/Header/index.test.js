@@ -12,7 +12,7 @@ it("Should have a loading, a mascot, filter, theme and chaos toggles", () => {
   const icons = getByTestId("icons");
 
   expect(header.children[0].className.includes("load-bar")).toBe(true);
-  expect(mascot.src).toBe("http://localhost/logo-mascot.svg");
+  expect(mascot.src.includes("logo-mascot.svg")).toBe(true);
   expect(icons.children.length).toBe(3);
   expect(icons.children[0].className.includes("filterToggle")).toBe(true);
   expect(icons.children[1].className.includes("chaosToggle")).toBe(true);
