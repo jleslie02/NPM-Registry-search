@@ -11,6 +11,10 @@ Steps
 2. Run `npm i`
 3. Then `npm start`
 
+## Tests
+Run `npm test`
+Then `a` to run all tests
+
 ## App access
 Access the app directly via the following link:
 http://npmregistry.jeex.io.s3-website-us-east-1.amazonaws.com/
