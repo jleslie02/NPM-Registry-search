@@ -1,5 +1,6 @@
 /* eslint-disable prefer-promise-reject-errors */
 /* eslint-disable import/prefer-default-export */
+// eslint-disable-next-line no-unused-vars
 import React, { useState, useEffect, useReducer } from "react";
 import axios from "axios";
 import queryString from "query-string";

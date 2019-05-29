@@ -1,5 +1,6 @@
 /* @jsx jsx */
 import React, { useState, useEffect, useMemo } from "react";
+// eslint-disable-next-line no-unused-vars
 import { jsx, css } from "@emotion/core";
 import { ThemeProvider } from "emotion-theming";
 import includes from "ramda/src/includes";
