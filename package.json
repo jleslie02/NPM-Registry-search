@@ -35,10 +35,11 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "GENERATE_SOURCEMAP=false npm run build",
+    "build": "react-scripts build --nomaps",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "precommit": "NODE_ENV=production lint-staged"
+    "precommit": "NODE_ENV=production lint-staged",
+    "deploy": "aws s3 sync build/ s3://npmregistry.jeex.io"
   },
   "lint-staged": {
     "*.{js,jsx}": [
